@@ -75,42 +75,60 @@
     * {
       padding: 0;
       margin: 0;
+      color: #333333;
     }
 
     select {
-      resize: both;
-      height: 500px;
+      width: 300px;
     }
 
     .avail, .unavail {
+      display: inline-block;
       padding: 8px;
       margin-left: 25px;
     }
 
     .avail {
-      background-color: #22dd22;
+      background-color: #44dd44;
     }
 
     .unavail {
-      background-color: #dd2222;
+      background-color: #dd4444;
+    }
+
+    .stores, .models {
+      margin: 10px;
+      width: 200px;
+    }
+
+    input[type=submit] {
+      margin: 10px;
+      padding: 5px;
+    }
+
+    .storeCheck {
+      margin-bottom: 20px;
     }
   </style>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <body>
   <p>Based on <a href="https://github.com/MystK/apple-reservations-checker">MystK</a> availability checker.</p>
   <form method="get">
     <?php
-      print 'Stores: <select name="stores[]" multiple>';
+      print '<p class="stores">Stores: <select id="stores" name="stores[]" multiple>';
       foreach($stores['stores'] as $store) {
         print '<option value="' . $store['storeNumber'] . '">' . $store['storeName'] . '</option>';
       }
-      print '</select>';
-      print 'Models: <select name="models[]" multiple>';
+      print '</select></p>';
+      print '<p class="models">Models: <select id="models" name="models[]" multiple>';
 
       foreach($models['skus'] as $model) {
         print '<option value="' . $model['part_number'] . '">' . $carriers[$model['group_id']] . ' - ' . $model['productDescription'] . '</option>';
       }
-      print '</select>';
+      print '</select></p>';
     ?>
     <input type="submit">
   </form>
@@ -120,7 +138,7 @@
     foreach($stores['stores'] as $store) {
       foreach($result as $store_id => $store_models) {
         if($store['storeNumber'] == $store_id) {
-          print '<p><h1>' . $store['storeName'] . ':</h1>';
+          print '<p class="storeCheck"><h1>' . $store['storeName'] . ':</h1>';
           foreach($models['skus'] as $model) {
             foreach($store_models as $model_id => $avail) {
               if($model['part_number'] == $model_id) {
@@ -138,5 +156,15 @@
       }
     }
    ?>
+
+   <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+   <script>
+     $(document).ready(function() {
+        $('#stores').select2();
+        $('#models').select2();
+     });
+
+   </script>
 </body>
 </html>
