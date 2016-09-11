@@ -78,6 +78,10 @@
       color: #333333;
     }
 
+    body {
+      background: #f1f1f1;
+    }
+
     select {
       width: 300px;
     }
@@ -85,7 +89,8 @@
     .avail, .unavail {
       display: inline-block;
       padding: 8px;
-      margin-left: 25px;
+      margin: 5px;
+      width: 30%;
     }
 
     .avail {
@@ -108,6 +113,7 @@
 
     .storeCheck {
       margin-bottom: 20px;
+      padding-left: 25px;
     }
   </style>
 
@@ -115,6 +121,7 @@
 
 </head>
 <body>
+  <h1>iPhone availability check</h1>
   <p>Based on <a href="https://github.com/MystK/apple-reservations-checker">MystK</a> availability checker.</p>
   <form method="get">
     <?php
@@ -138,7 +145,7 @@
     foreach($stores['stores'] as $store) {
       foreach($result as $store_id => $store_models) {
         if($store['storeNumber'] == $store_id) {
-          print '<p class="storeCheck"><h1>' . $store['storeName'] . ':</h1>';
+          print '<div class="storeCheck"><h1>' . $store['storeName'] . ':</h1>';
           foreach($models['skus'] as $model) {
             foreach($store_models as $model_id => $avail) {
               if($model['part_number'] == $model_id) {
@@ -151,7 +158,7 @@
               }
             }
           }
-          print '</p>';
+          print '</div>';
         }
       }
     }
